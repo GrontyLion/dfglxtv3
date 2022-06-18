@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mjl.dfglxtv3.mapper.ElectricityRecordMapper">
+  <resultMap id="BaseResultMap" type="com.mjl.dfglxtv3.domain.ElectricityRecord">
+    <!--@mbg.generated-->
+    <!--@Table electricity_record-->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="dorm_id" jdbcType="BIGINT" property="dormId" />
+    <result column="power_consumption" jdbcType="DECIMAL" property="powerConsumption" />
+    <result column="price" jdbcType="DECIMAL" property="price" />
+    <result column="record_date" jdbcType="TIMESTAMP" property="recordDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, dorm_id, power_consumption, price, record_date
+  </sql>
+</mapper>

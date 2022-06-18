@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<title> Pear Admin Layui </title>
+		<title> 闽南师范大学宿舍电费管理系统 </title>
 		<!-- 依 赖 样 式 -->
-		<link rel="stylesheet" href="component/pear/css/pear.css" />
+		<link rel="stylesheet" th:href="@{/component/pear/css/pear.css}" />
 		<!-- 加 载 样 式 -->
-		<link rel="stylesheet" href="admin/css/loader.css" />
+		<link rel="stylesheet" th:href="@{/admin/css/loader.css}" />
 		<!-- 布 局 样 式 -->
-		<link rel="stylesheet" href="admin/css/admin.css" />
+		<link rel="stylesheet" th:href="@{/admin/css/admin.css}" />
 	</head>
 	<!-- 结 构 代 码 -->
 	<body class="layui-layout-body pear-admin">
@@ -42,7 +42,7 @@
 						<a class="layui-icon layui-icon-username" href="javascript:;"></a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a user-menu-url="view/system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
+							<dd><a user-menu-url="system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
 							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
 						</dl>
 					</li>
@@ -93,27 +93,39 @@
 			<a href="#" class="layui-icon layui-icon-shrink-right"></a>
 		</div>
 		<!-- 依 赖 脚 本 -->
-		<script src="component/layui/layui.js"></script>
-		<script src="component/pear/pear.js"></script>
+		<script th:src="@{/component/layui/layui.js}"></script>
+		<script th:src="@{/component/pear/pear.js}"></script>
 		<!-- 框 架 初 始 化 -->
 		<script>
 			layui.use(['admin','jquery','popup','drawer'], function() {
-				var $ = layui.jquery;
-				var admin = layui.admin;
-				var popup = layui.popup;
-				
+				const $ = layui.jquery;
+				const admin = layui.admin;
+				const popup = layui.popup;
+
+
 				admin.setConfigType("yml");
 				admin.setConfigPath("config/pear.config.yml");
-				
 				admin.render();
 				
 				// 登出逻辑 
 				admin.logout(function(){
 					popup.success("注销成功",function(){
-						location.href = "login.html";
+						location.href = "/login";
 					})
 					// 注销逻辑 返回 true / false
-					return true;
+					$.ajax({
+						url: "/api/user/logout",
+						type: "post",
+						dataType: "json",
+						success: function(data){
+							if(data.code === 200){
+								// 清除cookie中的satoken
+								document.cookie = "satoken=; expires=Thu, 01 Jan 1970 00:00:00 GMT";
+								return true;
+							}
+						}
+					});
+					return false;
 				})
 				
 				// 自定义消息点击回调

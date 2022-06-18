@@ -10,14 +10,14 @@
 			"icon": "layui-icon layui-icon-console",
 			"type": 1,
 			"openType": "_iframe",
-			"href": "view/console/console1.html"
+			"href": "console/console1"
 		}, {
 			"id": 13,
 			"title": "数据分析",
 			"icon": "layui-icon layui-icon-console",
 			"type": 1,
 			"openType": "_iframe",
-			"href": "view/console/console2.html"
+			"href": "console/console2.html"
 		}, {
 			"id": 14,
 			"title": "百度一下",
@@ -31,7 +31,7 @@
 			"icon": "layui-icon layui-icon-console",
 			"type": 1,
 			"openType": "_iframe",
-			"href": "view/system/theme.html"
+			"href": "system/theme.html"
 		}]
 	},
 	{
@@ -51,35 +51,35 @@
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/button.html"
+				"href": "document/button.html"
 			}, {
 				"id": 2014,
 				"title": "表单集合",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/form.html"
+				"href": "document/form.html"
 			}, {
 				"id": 2010,
 				"title": "字体图标",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/icon.html"
+				"href": "document/icon.html"
 			}, {
 				"id": 2012,
 				"title": "多选下拉",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/select.html"
+				"href": "document/select.html"
 			}, {
 				"id": 2013,
 				"title": "动态标签",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/tag.html"
+				"href": "document/tag.html"
 			}]
 		}, {
 			"id": 203,
@@ -92,42 +92,42 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/table.html"
+				"href": "document/table.html"
 			}, {
 				"id": 2032,
 				"title": "分布表单",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/step.html"
+				"href": "document/step.html"
 			}, {
 				"id": 2033,
 				"title": "树形表格",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/treetable.html"
+				"href": "document/treetable.html"
 			}, {
 				"id": 2034,
 				"title": "树状结构",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/dtree.html"
+				"href": "document/dtree.html"
 			}, {
 				"id": 2035,
 				"title": "文本编辑",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/tinymce.html"
+				"href": "document/tinymce.html"
 			}, {
 				"id": 2036,
 				"title": "卡片组件",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/card.html"
+				"href": "document/card.html"
 			}]
 		}, {
 			"id": 202,
@@ -140,28 +140,28 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/drawer.html"
+				"href": "document/drawer.html"
 			}, {
 				"id": 2022,
 				"title": "消息通知",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/notice.html"
+				"href": "document/notice.html"
 			}, {
 				"id": 2024,
 				"title": "加载组件",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/loading.html"
+				"href": "document/loading.html"
 			}, {
 				"id": 2023,
 				"title": "弹层组件",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/popup.html"
+				"href": "document/popup.html"
 			}]
 		},{
 			"id": 60331,
@@ -174,14 +174,14 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/tab.html"
+				"href": "document/tab.html"
 			},{
 				"id": 60132,
 				"title": "数据菜单",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/document/menu.html"
+				"href": "document/menu.html"
 			}]
 		}, {
 			"id": 204,
@@ -194,7 +194,7 @@
 					"icon": "layui-icon layui-icon-face-cry",
 					"type": 1,
 					"openType": "_iframe",
-					"href": "view/document/hash.html"
+					"href": "document/hash.html"
 				},
 				{
 					"id": 2042,
@@ -202,7 +202,7 @@
 					"icon": "layui-icon layui-icon-face-cry",
 					"type": 1,
 					"openType": "_iframe",
-					"href": "view/document/iconPicker.html"
+					"href": "document/iconPicker.html"
 				},
 				{
 					"id": 2043,
@@ -210,7 +210,7 @@
 					"icon": "layui-icon layui-icon-face-cry",
 					"type": 1,
 					"openType": "_iframe",
-					"href": "view/document/area.html"
+					"href": "document/area.html"
 				},
 				{
 					"id": 2044,
@@ -218,7 +218,7 @@
 					"icon": "layui-icon layui-icon-face-cry",
 					"type": 1,
 					"openType": "_iframe",
-					"href": "view/document/count.html"
+					"href": "document/count.html"
 				},
 				{
 					"id": 2045,
@@ -226,7 +226,7 @@
 					"icon": "layui-icon layui-icon-face-cry",
 					"type": 1,
 					"openType": "_iframe",
-					"href": "view/document/topBar.html"
+					"href": "document/topBar.html"
 				}
 			]
 		}]
@@ -243,7 +243,7 @@
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/result/success.html"
+				"href": "result/success.html"
 			},
 			{
 				"id": "failure",
@@ -251,7 +251,7 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/result/error.html"
+				"href": "result/error.html"
 			}
 		]
 	},
@@ -267,7 +267,7 @@
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/error/403.html"
+				"href": "error/403.html"
 			},
 			{
 				"id": 404,
@@ -275,7 +275,7 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/error/404.html"
+				"href": "error/404.html"
 			},
 
 			{
@@ -284,7 +284,7 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/error/500.html"
+				"href": "error/500.html"
 			}
 
 		]
@@ -301,7 +301,7 @@
 				"icon": "layui-icon layui-icon-face-smile",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/system/user.html"
+				"href": "system/user"
 			},
 			{
 				"id": 602,
@@ -309,7 +309,7 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/system/role.html"
+				"href": "system/role.html"
 			},
 
 			{
@@ -318,7 +318,7 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/system/power.html"
+				"href": "system/power.html"
 			},
 
 			{
@@ -327,7 +327,7 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/system/deptment.html"
+				"href": "system/deptment.html"
 			},
 			{
 				"id": 605,
@@ -335,14 +335,14 @@
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/system/log.html"
+				"href": "system/log.html"
 			}, {
 				"id": 606,
 				"title": "数据字典",
 				"icon": "layui-icon layui-icon-face-cry",
 				"type": 1,
 				"openType": "_iframe",
-				"href": "view/system/dict.html"
+				"href": "system/dict.html"
 			}
 
 		]
@@ -366,7 +366,7 @@
 			"icon": "layui-icon layui-icon-face-smile",
 			"type": 1,
 			"openType": "_iframe",
-			"href": "view/system/space.html"
+			"href": "system/space.html"
 		}]
 	}
 ]

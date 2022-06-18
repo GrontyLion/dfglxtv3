@@ -1,6 +1,6 @@
 {
 	"logo": {
-		"title": "Pear Admin",
+		"title": "宿舍电费管理",
 		"image": "admin/images/logo.png"
 	},
 	"menu": {
@@ -21,7 +21,7 @@
 		"max": "30",
 		"index": {
 			"id": "10",
-			"href": "view/console/console1.html",
+			"href": "console/console1",
 			"title": "首页"
 		}
 	},
