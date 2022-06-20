@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>新增页面</title>
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item flex flex-start">
+                <label class="layui-form-label w-32">电费类型</label>
+                <div class="layui-input-block">
+                    <select name="id" class="layui-input-block" lay-verify="required" lay-search lay-filter="id-change">
+                        <option value="">请选择电费类型（不可空）</option>
+                        <div th:each="electrovalencyType: ${electrovalencyTypeList}">
+                            <option th:value="${electrovalencyType.id}" th:attrappend="price=${electrovalencyType.price}" th:text="${electrovalencyType.name}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item flex flex-start">
+                <label class="layui-form-label w-32">单价（元/度）</label>
+                <div class="layui-input-block">
+                    <input type="number" name="price" lay-verify="required|number" autocomplete="off" placeholder="请输入电费单价"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                    lay-filter="building-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="pear-btn pear-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+<script th:src="@{/component/layui/layui.js}"></script>
+<script th:src="@{/component/pear/pear.js}"></script>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+
+        form.on('select(id-change)', function(data){
+            console.log(data.value);
+            console.log($('select[name="id"]').find('option:selected').attr('price'));
+            $('input[name="price"]').val($('select[name="id"]').find('option:selected').attr('price'));
+        });
+
+        form.on('submit(building-save)', function (data) {
+            $.ajax({
+                url: '/api/electrovalencyType/update',
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function (result) {
+                    if (result.code === 200) {
+                        layer.msg(result.data, {
+                            icon: 1,
+                            time: 1000
+                        }, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页
+                            parent.layui.table.reload("building-table"); //重载表格
+                        });
+                    } else {
+                        layer.msg(result.msg, {
+                            icon: 2,
+                            time: 1000
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

@@ -43,7 +43,10 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                         "/api/building/delete",
                         "/api/building/batchRemove",
                         "/api/dormType/add",
-                        "/api/dormType/delete"
+                        "/api/dormType/delete",
+                        "/api/electrovalencyType/add",
+                        "/api/electrovalencyType/delete",
+                        "/api/electrovalencyType/update"
                 );
     }
 }

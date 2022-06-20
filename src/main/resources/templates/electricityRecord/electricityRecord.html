@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>宿舍楼管理</title>
+    <title>用户管理</title>
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -12,24 +12,58 @@
         <form class="layui-form flex justify-start flex-wrap" action="">
 
             <div class="layui-form-item layui-inline">
-                <label class="layui-form-label">宿舍楼</label>
+                <label class="layui-form-label">用户名</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="username" placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">姓名</label>
                 <div class="layui-input-inline">
                     <input type="text" name="name" placeholder="" class="layui-input">
                 </div>
             </div>
-            <div class="layui-form-item layui-inline ">
-                <label class="layui-form-label w-24">电费类型</label>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">角色</label>
                 <div class="layui-input-inline">
-                    <select name="electrovalencyTypeId" class="layui-input-inline" lay-search>
-                        <option value="">请选择电费类型（可空）</option>
-                        <div th:each="electrovalencyType: ${electrovalencyTypeList}">
-                            <option th:value="${electrovalencyType.id}" th:text="${electrovalencyType.name}"></option>
+                    <select name="roleId" class="layui-input-inline" lay-search>
+                        <option value="">请选择角色名（可空）</option>
+                        <div th:each="role: ${roleList}">
+                            <option th:value="${role.id}" th:text="${role.name}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">邮箱</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="email" placeholder="" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline ">
+                <label class="layui-form-label">宿舍号</label>
+                <div class="layui-input-inline">
+                    <select name="dormId" class="layui-input-inline" lay-search>
+                        <option value="">请选择宿舍号（可空）</option>
+                        <div th:each="dorm: ${dormList}">
+                            <option th:value="${dorm.id}" th:text="${dorm.name}"></option>
                         </div>
                     </select>
                 </div>
             </div>
             <div class="layui-form-item layui-inline ">
-                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="building-query">
+                <label class="layui-form-label">宿舍楼</label>
+                <div class="layui-input-inline">
+                    <select name="buildingId" class="layui-input-inline" lay-search>
+                        <option value="">请选择宿舍楼（可空）</option>
+                        <div th:each="building: ${buildingList}">
+                            <option th:value="${building.id}" th:text="${building.name}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline ">
+                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
                     <i class="layui-icon layui-icon-search"></i>
                     查询
                 </button>
@@ -44,34 +78,22 @@
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
-        <table id="building-table" lay-filter="building-table"></table>
+        <table id="user-table" lay-filter="user-table"></table>
     </div>
 </div>
 
-<script type="text/html" id="building-toolbar">
+<script type="text/html" id="user-toolbar">
     <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
-    </button>
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="addElectrovalencyType">
-        <i class="layui-icon layui-icon-add-1"></i>
-        新增电费类型
     </button>
     <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="deleteElectrovalencyType">
-        <i class="layui-icon layui-icon-delete"></i>
-        删除电费类型
-    </button>
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="updateElectrovalencyType">
-        <i class="layui-icon layui-icon-edit"></i>
-        编辑电费类型
-    </button>
 </script>
 
-<script type="text/html" id="building-bar">
+<script type="text/html" id="user-bar">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
     </button>
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
@@ -98,23 +120,39 @@
                 type: 'checkbox'
             },
                 {
-                    title: '宿舍楼',
-                    field: 'name',
+                    title: '用户名',
+                    field: 'username',
                     align: 'center',
                 },
                 {
-                    title: '电费类型',
-                    field: 'electrovalencyTypeName',
+                    title: '姓名',
+                    field: 'name',
                     align: 'center'
                 },
                 {
-                    title: '电费单价',
-                    field: 'price',
+                    title: '角色名',
+                    field: 'roleName',
+                    align: 'center',
+                    width: 80,
+                },
+                {
+                    title: '邮箱',
+                    field: 'email',
                     align: 'center'
+                },
+                {
+                    title: '宿舍名',
+                    field: 'dormName',
+                    align: 'center',
+                },
+                {
+                    title: '宿舍楼',
+                    field: 'buildingName',
+                    align: 'center',
                 },
                 {
                     title: '操作',
-                    toolbar: '#building-bar',
+                    toolbar: '#user-bar',
                     align: 'center',
                     width: 130
                 }
@@ -122,13 +160,13 @@
         ]
 
         table.render({
-            elem: '#building-table',
-            url: '/api/building/list',
+            elem: '#user-table',
+            url: '/api/user/list',
             page: true,
             type: 'POST',
             cols: cols,
             skin: 'line',
-            toolbar: '#building-toolbar',
+            toolbar: '#user-toolbar',
             defaultToolbar: [{
                 title: '刷新',
                 layEvent: 'refresh',
@@ -136,21 +174,21 @@
             }, 'filter', 'print', 'exports']
         });
 
-        // const dormId = [[${#request.getParameter("dormId")}]]
-        // const buildingId = [[${#request.getParameter("buildingId")}]]
-        // if (dormId !== '') {
-        //     $('[name="dormId"]').val(dormId);
-        //     $('[name="buildingId"]').val(buildingId);
-        //     form.render('select');
-        //     table.reload('building-table', {
-        //         where: {
-        //             dormId: dormId
-        //         },
-        //         url: '/api/user/list'
-        //     })
-        // }
+        const dormId = [[${#request.getParameter("dormId")}]]
+        const buildingId = [[${#request.getParameter("buildingId")}]]
+        if (dormId !== '') {
+            $('[name="dormId"]').val(dormId);
+            $('[name="buildingId"]').val(buildingId);
+            form.render('select');
+            table.reload('user-table', {
+                where: {
+                    dormId: dormId
+                },
+                url: '/api/user/list'
+            })
+        }
 
-        table.on('tool(building-table)', function (obj) {
+        table.on('tool(user-table)', function (obj) {
             if (obj.event === 'remove') {
                 window.remove(obj);
             } else if (obj.event === 'edit') {
@@ -158,67 +196,27 @@
             }
         });
 
-        table.on('toolbar(building-table)', function (obj) {
+        table.on('toolbar(user-table)', function (obj) {
             if (obj.event === 'add') {
                 window.add();
             } else if (obj.event === 'refresh') {
                 window.refresh();
             } else if (obj.event === 'batchRemove') {
                 window.batchRemove(obj);
-            } else if (obj.event === 'addElectrovalencyType') {
-                window.addElectrovalencyType(obj);
-            } else if (obj.event === 'deleteElectrovalencyType') {
-                window.deleteElectrovalencyType(obj);
-            }else if (obj.event === 'updateElectrovalencyType') {
-                window.updateElectrovalencyType(obj);
             }
         });
 
-        form.on('submit(building-query)', function (data) {
-            table.reload('building-table', {
+        form.on('submit(user-query)', function (data) {
+            table.reload('user-table', {
                 where: data.field,
-                url: '/api/building/list'
+                url: '/api/user/list'
             })
             return false;
         });
 
-        form.on('switch(building-enable)', function (obj) {
+        form.on('switch(user-enable)', function (obj) {
             layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
         });
-
-        window.addElectrovalencyType = function () {
-            layer.open({
-                type: 2,
-                title: '新增电费类型',
-                shade: 0.1,
-                area: [common.isModile() ? '100%' : '500px', common.isModile() ? '100%' : '400px'],
-                content: MODULE_PATH + 'addElectrovalencyType',
-                end: function () {
-                    parent.layui.admin.refreshThis();
-                }
-            });
-        }
-        window.deleteElectrovalencyType = function () {
-            layer.open({
-                type: 2,
-                title: '删除电费类型',
-                shade: 0.1,
-                area: [common.isModile() ? '100%' : '500px', common.isModile() ? '100%' : '400px'],
-                content: MODULE_PATH + 'deleteElectrovalencyType',
-                end: function () {
-                    parent.layui.admin.refreshThis();
-                }
-            });
-        }
-        window.updateElectrovalencyType = function () {
-            layer.open({
-                type: 2,
-                title: '编辑电费类型',
-                shade: 0.1,
-                area: [common.isModile() ? '100%' : '500px', common.isModile() ? '100%' : '400px'],
-                content: MODULE_PATH + 'updateElectrovalencyType'
-            });
-        }
 
         window.add = function () {
             layer.open({
@@ -236,19 +234,19 @@
                 title: '修改',
                 shade: 0.1,
                 area: ['500px', '500px'],
-                content: '/building/operate/edit?id=' + obj.data.id
+                content: '/user/operate/edit?id=' + obj.data.id
             });
         }
 
         window.remove = function (obj) {
-            layer.confirm('确定要删除该宿舍楼', {
+            layer.confirm('确定要删除该用户', {
                 icon: 3,
                 title: '提示'
             }, function (index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "/api/building/delete",
+                    url: "/api/user/delete",
                     data: {
                         id: obj.data.id
                     },
@@ -287,14 +285,14 @@
 
             let ids = checkIds.split(",");
 
-            layer.confirm('确定要删除这些宿舍楼', {
+            layer.confirm('确定要删除这些用户', {
                 icon: 3,
                 title: '提示'
             }, function (index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "/api/building/batchRemove",
+                    url: "/api/user/batchRemove",
                     dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify(ids),
@@ -306,7 +304,7 @@
                                 icon: 1,
                                 time: 1000
                             }, function () {
-                                table.reload('building-table');
+                                table.reload('user-table');
                             });
                         } else {
                             layer.msg(result.msg, {
@@ -320,7 +318,7 @@
         }
 
         window.refresh = function (param) {
-            table.reload('building-table');
+            table.reload('user-table');
         }
     })
 </script>

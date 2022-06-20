@@ -27,6 +27,7 @@ public class BuildingService extends ServiceImpl<BuildingMapper, Building> {
             BeanUtils.copyProperties(building, buildingVo);
             ElectrovalencyType electrovalencyType = electrovalencyTypeService.getById(building.getElectrovalencyTypeId());
             buildingVo.setElectrovalencyTypeName(electrovalencyType.getName());
+            buildingVo.setPrice(electrovalencyType.getPrice());
             return buildingVo;
         }).toList();
     }

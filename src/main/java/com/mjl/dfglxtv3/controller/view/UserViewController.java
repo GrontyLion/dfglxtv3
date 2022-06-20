@@ -234,6 +234,27 @@ public class UserViewController {
         return operateAdd;
     }
 
+    @GetMapping(value = "/building/operate/addElectrovalencyType")
+    public ModelAndView buildingOperateAddElectrovalencyType() {
+        return new ModelAndView("building/operate/addElectrovalencyType");
+    }
+
+    @GetMapping(value = "/building/operate/deleteElectrovalencyType")
+    public ModelAndView buildingOperateDeleteDormType() {
+        ModelAndView modelAndView = new ModelAndView("building/operate/deleteElectrovalencyType");
+        List<ElectrovalencyType> list = electrovalencyTypeService.list();
+        modelAndView.addObject("electrovalencyTypeList", list);
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/building/operate/updateElectrovalencyType")
+    public ModelAndView buildingOperateUpdateDormType() {
+        ModelAndView modelAndView = new ModelAndView("building/operate/updateElectrovalencyType");
+        List<ElectrovalencyType> list = electrovalencyTypeService.list();
+        modelAndView.addObject("electrovalencyTypeList", list);
+        return modelAndView;
+    }
+
     @GetMapping(value = "/console/console2")
     public String consoleConsole2() {
         return "/console/console2";
