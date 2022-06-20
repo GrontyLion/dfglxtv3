@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sa="http://www.w3.org/1999/xhtml" lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>新增页面</title>
+    <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
+</head>
+<body>
+<form class="layui-form" action="">
+    <div class="mainBox">
+        <div class="main-container">
+            <div class="layui-form-item" sa:hasRole="ADMIN">
+                <label class="layui-form-label">宿舍号</label>
+                <div class="layui-input-block">
+                    <select name="dormId" class="layui-input-block" lay-verify="required" lay-search>
+                        <option value="">请选择宿舍号（不可空）</option>
+                        <div th:each="dorm: ${dormList}">
+                            <option th:value="${dorm.id}" th:text="${dorm.name}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">充值金额</label>
+                <div class="layui-input-block">
+                    <input type="number" name="amount" lay-verify="required|amount|number" autocomplete="off"
+                           placeholder="请输入充值金额，单位：元"
+                           class="layui-input">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bottom">
+        <div class="button-container">
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+                    lay-filter="recharge-save">
+                <i class="layui-icon layui-icon-ok"></i>
+                提交
+            </button>
+            <button type="reset" class="pear-btn pear-btn-sm">
+                <i class="layui-icon layui-icon-refresh"></i>
+                重置
+            </button>
+        </div>
+    </div>
+</form>
+<script th:src="@{/component/layui/layui.js}"></script>
+<script th:src="@{/component/pear/pear.js}"></script>
+<script>
+    layui.use(['form', 'jquery'], function () {
+        let form = layui.form;
+        let $ = layui.jquery;
+        form.verify({
+            amount: function (value) {
+                if (value.length === 0) {
+                    return '请输入充值金额';
+                }
+                if (value < 0) {
+                    return '充值金额不能小于0';
+                }
+            }
+            
+        });
+
+        form.on('submit(recharge-save)', function (data) {
+            $.ajax({
+                url: '/api/rechargeRecord/recharge',
+                data: JSON.stringify(data.field),
+                dataType: 'json',
+                contentType: 'application/json',
+                type: 'post',
+                success: function (result) {
+                    if (result.code === 200) {
+                        layer.msg(result.data, {
+                            icon: 1,
+                            time: 1000
+                        }, function () {
+                            parent.layer.close(parent.layer.getFrameIndex(window
+                                .name)); //关闭当前页
+                            parent.layui.table.reload("recharge-record-table");
+                            parent.layui.table.reload("dorm-table");
+                        });
+                    } else {
+                        layer.msg(result.msg, {
+                            icon: 2,
+                            time: 1000
+                        });
+                    }
+                }
+            })
+            return false;
+        });
+    })
+</script>
+<script>
+</script>
+</body>
+</html>

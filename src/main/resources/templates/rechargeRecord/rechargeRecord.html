@@ -9,7 +9,18 @@
 <body class="pear-container">
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form flex justify-center flex-wrap" action="">
+        <form class="layui-form flex justify-start flex-wrap" action="">
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">用户</label>
+                <div class="layui-input-inline">
+                    <select name="userId" class="layui-input-inline" lay-search>
+                        <option value="">请选择用户（可空）</option>
+                        <div th:each="user: ${userList}">
+                            <option th:value="${user.id}" th:text="${user.username}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
             <div class="layui-form-item layui-inline">
                 <label class="layui-form-label">宿舍号</label>
                 <div class="layui-input-inline">
@@ -45,7 +56,7 @@
                 </div>
             </div>
             <div class="layui-form-item layui-inline ">
-                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="electricity-record-query">
+                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="recharge-record-query">
                     <i class="layui-icon layui-icon-search"></i>
                     查询
                 </button>
@@ -60,14 +71,14 @@
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
-        <table id="electricity-record-table" lay-filter="electricity-record-table"></table>
+        <table id="recharge-record-table" lay-filter="recharge-record-table"></table>
     </div>
 </div>
 
 <script type="text/html" id="user-toolbar">
     <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
-        模拟用电
+        充值
     </button>
 </script>
 
@@ -112,32 +123,29 @@
                     align: 'center'
                 },
                 {
-                    title: '用电量（度）',
-                    field: 'powerConsumption',
+                    title: '充值金额（元）',
+                    field: 'amount',
                     align: 'center',
-                    totalRow: '{{ d.TOTAL_NUMS }} 度'
-                }, {
-                title: '日期',
-                field: 'recordDate',
-                align: 'center',
-            },
-                {
-                    title: '单价（元/度）',
-                    field: 'price',
-                    align: 'center'
+                    totalRow: '{{ d.TOTAL_NUMS }} 元',
+                    sort: true
                 },
                 {
-                    title: '总计（元）',
-                    field: 'totalPrice',
+                    title: '日期',
+                    field: 'paymentTime',
                     align: 'center',
-                    totalRow: '{{ d.TOTAL_NUMS }} 元'
+                    sort: true
+                },
+                {
+                    title: '充值人',
+                    field: 'username',
+                    align: 'center',
                 }
             ]
         ]
 
         table.render({
-            elem: '#electricity-record-table',
-            url: '/api/electricityRecord/list',
+            elem: '#recharge-record-table',
+            url: '/api/rechargeRecord/list',
             page: true,
             type: 'POST',
             cols: cols,
@@ -150,9 +158,9 @@
                 icon: 'layui-icon-refresh',
             }, 'filter', 'print', 'exports']
         });
-        
 
-        table.on('toolbar(electricity-record-table)', function (obj) {
+
+        table.on('toolbar(recharge-record-table)', function (obj) {
             if (obj.event === 'add') {
                 window.add();
             } else if (obj.event === 'refresh') {
@@ -160,14 +168,14 @@
             }
         });
 
-        form.on('submit(electricity-record-query)', function (data) {
-            table.reload('electricity-record-table', {
+        form.on('submit(recharge-record-query)', function (data) {
+            table.reload('recharge-record-table', {
                 where: data.field,
-                url: '/api/electricityRecord/list'
+                url: '/api/rechargeRecord/list'
             })
             return false;
         });
-        
+
         window.add = function () {
             layer.open({
                 type: 2,
@@ -180,7 +188,7 @@
 
 
         window.refresh = function (param) {
-            table.reload('electricity-record-table');
+            table.reload('recharge-record-table');
         }
     })
 </script>

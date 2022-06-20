@@ -2,6 +2,7 @@ package com.mjl.dfglxtv3.security;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.mjl.dfglxtv3.service.RoleService;
+import com.mjl.dfglxtv3.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +20,9 @@ public class StpInterfaceImpl implements StpInterface {
     @Resource
     private RoleService roleService;
 
+    @Resource
+    private UserService userService;
+
     /**
      * 返回一个账号所拥有的权限码集合
      */
@@ -26,7 +30,8 @@ public class StpInterfaceImpl implements StpInterface {
     public List<String> getPermissionList(Object loginId, String loginType) {
         List<String> permissionList = new ArrayList<>();
         log.error("loginId: {}", loginId);
-        permissionList.add(roleService.getById(Long.parseLong((String) loginId)).getName());
+        Long roleId = userService.getById((String) loginId).getRoleId();
+        permissionList.add(roleService.getById(roleId).getName());
         return permissionList;
     }
 
@@ -36,7 +41,9 @@ public class StpInterfaceImpl implements StpInterface {
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         List<String> roleList = new ArrayList<>();
-        roleList.add(roleService.getById((Long) loginId).getName());
+        log.error("loginId: {}", loginId);
+        Long roleId = userService.getById((String) loginId).getRoleId();
+        roleList.add(roleService.getById(roleId).getName());
         return roleList;
     }
 

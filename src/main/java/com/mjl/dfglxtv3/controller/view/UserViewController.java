@@ -255,6 +255,36 @@ public class UserViewController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/electricityRecord/electricityRecord")
+    public ModelAndView electricityRecord() {
+        ModelAndView building = new ModelAndView("electricityRecord/electricityRecord");
+        List<Dorm> list = dormService.list();
+        List<Building> list1 = buildingService.list();
+        building.addObject("dormList", list);
+        building.addObject("buildingList", list1);
+        return building;
+    }
+
+    @GetMapping(value = "/rechargeRecord/rechargeRecord")
+    public ModelAndView rechargeRecord() {
+        ModelAndView building = new ModelAndView("rechargeRecord/rechargeRecord");
+        List<Dorm> list = dormService.list();
+        List<Building> list1 = buildingService.list();
+        List<User> list2 = userService.list();
+        building.addObject("dormList", list);
+        building.addObject("buildingList", list1);
+        building.addObject("userList", list2);
+        return building;
+    }
+
+    @GetMapping(value = "/rechargeRecord/operate/add")
+    public ModelAndView rechargeRecordOperateAdd() {
+        ModelAndView rechargeRecord = new ModelAndView("rechargeRecord/operate/add");
+        List<Dorm> list = dormService.list();
+        rechargeRecord.addObject("dormList", list);
+        return rechargeRecord;
+    }
+
     @GetMapping(value = "/console/console2")
     public String consoleConsole2() {
         return "/console/console2";

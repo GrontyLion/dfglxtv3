@@ -27,74 +27,33 @@
   {
     "id": "user",
     "title": "用户管理",
-    "icon": "layui-icon layui-icon-face-smile",
+    "icon": "layui-icon layui-icon-username",
     "type": 1,
     "openType": "_iframe",
     "href": "user/user"
   },
   {
-  "id": "building",
-  "title": "宿舍楼管理",
-  "icon": "layui-icon layui-icon-face-cry",
-  "type": 1,
-  "openType": "_iframe",
-  "href": "building/building"
-},
+    "id": "building",
+    "title": "宿舍楼管理",
+    "icon": "layui-icon layui-icon-user",
+    "type": 1,
+    "openType": "_iframe",
+    "href": "building/building"
+  },
   {
-    "id": "system",
-    "title": "系统管理",
-    "icon": "layui-icon layui-icon-set-fill",
-    "type": 0,
-    "href": "",
-    "children": [
-      {
-        "id": 601,
-        "title": "用户管理",
-        "icon": "layui-icon layui-icon-face-smile",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "system/user"
-      },
-      {
-        "id": 602,
-        "title": "角色管理",
-        "icon": "layui-icon layui-icon-face-cry",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "system/role"
-      },
-      {
-        "id": 603,
-        "title": "权限管理",
-        "icon": "layui-icon layui-icon-face-cry",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "system/power"
-      },
-      {
-        "id": 604,
-        "title": "部门管理",
-        "icon": "layui-icon layui-icon-face-cry",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "system/deptment"
-      },
-      {
-        "id": 605,
-        "title": "行为日志",
-        "icon": "layui-icon layui-icon-face-cry",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "system/log"
-      },
-      {
-        "id": 606,
-        "title": "数据字典",
-        "icon": "layui-icon layui-icon-face-cry",
-        "type": 1,
-        "openType": "_iframe",
-        "href": "system/dict"
-      }
-    ]
+    "id": "electricityRecord",
+    "title": "电费记录",
+    "icon": "layui-icon layui-icon-list",
+    "type": 1,
+    "openType": "_iframe",
+    "href": "electricityRecord/electricityRecord"
+  },
+  {
+    "id": "rechargeRecord",
+    "title": "缴费记录",
+    "icon": "layui-icon layui-icon-rmb",
+    "type": 1,
+    "openType": "_iframe",
+    "href": "rechargeRecord/rechargeRecord"
   }
 ]
