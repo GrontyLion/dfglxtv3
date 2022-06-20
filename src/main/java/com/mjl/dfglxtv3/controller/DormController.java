@@ -1,12 +1,15 @@
 package com.mjl.dfglxtv3.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mjl.dfglxtv3.common.Result;
 import com.mjl.dfglxtv3.common.ResultCode;
 import com.mjl.dfglxtv3.domain.Dorm;
+import com.mjl.dfglxtv3.domain.User;
 import com.mjl.dfglxtv3.domain.vo.DormVo;
 import com.mjl.dfglxtv3.service.DormService;
+import com.mjl.dfglxtv3.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -28,6 +31,9 @@ public class DormController {
     @Resource
     private DormService dormService;
 
+    @Resource
+    private UserService userService;
+
     /**
      * 获取全部记录
      *
@@ -35,7 +41,12 @@ public class DormController {
      */
     @RequestMapping("/list")
     @ResponseBody
-    public Map<String, Object> list(String name, String dormTypeId,String buildingId , String page, String limit) {
+    public Map<String, Object> list(String name, String dormTypeId, String buildingId, String page, String limit) {
+        String loginId = (String) StpUtil.getLoginId();
+        if (StpUtil.hasRole("USER")) {
+            name = dormService.getById(userService.getById(loginId).getDormId()).getName();
+            buildingId = null;
+        }
         Map<String, Object> map = new HashMap<>();
         Page<Dorm> dormPage = new Page<>();
         dormPage.setCurrent(Integer.parseInt(page));
@@ -61,6 +72,7 @@ public class DormController {
     @PostMapping("/add")
     @ResponseBody
     public Result<String> add(@RequestBody Dorm dorm) {
+        StpUtil.checkRole("ADMIN");
         QueryWrapper<Dorm> dormQueryWrapper = new QueryWrapper<>();
         dormQueryWrapper.eq("name", dorm.getName());
         dormQueryWrapper.or().eq("building_id", dorm.getBuildingId());
@@ -78,6 +90,7 @@ public class DormController {
     @PostMapping("/update")
     @ResponseBody
     public Result<String> update(@RequestBody Dorm dorm) {
+        StpUtil.checkRoleOr("ADMIN", "USER");
         QueryWrapper<Dorm> dormQueryWrapper = new QueryWrapper<>();
         dormQueryWrapper.eq("name", dorm.getName());
         dormQueryWrapper.or().eq("building_id", dorm.getBuildingId());
@@ -97,6 +110,13 @@ public class DormController {
     @PostMapping("/delete")
     @ResponseBody
     public Result<String> delete(Long id) {
+        StpUtil.checkRole("ADMIN");
+        // 判断是否有学生在该宿舍
+        QueryWrapper<User> dormQueryWrapper = new QueryWrapper<>();
+        dormQueryWrapper.eq("dorm_id", id);
+        if (userService.count(dormQueryWrapper) > 0) {
+            return Result.failed("该宿舍有学生在住，不能删除");
+        }
         boolean delete = dormService.removeById(id);
         if (delete) {
             return Result.success("删除成功");
@@ -108,6 +128,15 @@ public class DormController {
     @PostMapping("/batchRemove")
     @ResponseBody
     public Result<String> batchRemove(@RequestBody List<Long> ids) {
+        StpUtil.checkRole("ADMIN");
+        // 判断是否有学生在该宿舍
+        for (Long id : ids) {
+            QueryWrapper<User> dormQueryWrapper = new QueryWrapper<>();
+            dormQueryWrapper.eq("dorm_id", id);
+            if (userService.count(dormQueryWrapper) > 0) {
+                return Result.failed("宿舍: " + dormService.getById(id) + ", 该宿舍有学生在住，不能删除");
+            }
+        }
         boolean delete = dormService.removeBatchByIds(ids);
         if (delete) {
             return Result.success("删除成功");

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sa="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
     <meta charset="utf-8">
     <title>用户管理</title>
@@ -10,9 +10,9 @@
 <div class="layui-card">
     <div class="layui-card-body">
         <form class="layui-form flex justify-center flex-wrap" action="">
-            <div class="layui-form-item layui-inline">
+            <div sa:hasrole="ADMIN" class="layui-form-item layui-inline">
                 <label class="layui-form-label">宿舍号</label>
-                <div class="layui-input-inline">
+                <div  class="layui-input-inline">
                     <select name="dormId" class="layui-input-inline" lay-search>
                         <option value="">请选择宿舍号（可空）</option>
                         <div th:each="dorm: ${dormList}">
@@ -21,7 +21,7 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-form-item layui-inline">
+            <div sa:hasrole="ADMIN" class="layui-form-item layui-inline">
                 <label class="layui-form-label">宿舍楼</label>
                 <div class="layui-input-inline">
                     <select name="buildingId" class="layui-input-inline" lay-search>
@@ -74,6 +74,23 @@
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
 <script th:inline="javascript">
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+        return currentdate;
+    }
 
 
     layui.use(['table', 'form', 'jquery', 'common', 'laydate'], function () {
@@ -86,11 +103,21 @@
 
         const startDate = laydate.render({
             elem: '#startDate',
-            max: new Date().toLocaleDateString()
+            max: getNowFormatDate(),
+            done: function (value, date) {
+                endDate.config.min = {
+                    year: date.year,
+                    month: date.month - 1,
+                    date: date.date,
+                    hours: date.hours,
+                    minutes: date.minutes,
+                    seconds: date.seconds
+                };
+            }
         });
         const endDate = laydate.render({
             elem: '#endDate' //指定元素,
-            , max: new Date().toLocaleDateString()
+            , max: getNowFormatDate()
         });
 
         let MODULE_PATH = "operate/";
@@ -115,12 +142,15 @@
                     title: '用电量（度）',
                     field: 'powerConsumption',
                     align: 'center',
-                    totalRow: '{{ d.TOTAL_NUMS }} 度'
-                }, {
-                title: '日期',
-                field: 'recordDate',
-                align: 'center',
-            },
+                    totalRow: '{{ d.TOTAL_NUMS }} 度',
+                    sort: true
+                },
+                {
+                    title: '日期',
+                    field: 'recordDate',
+                    align: 'center',
+                    sort: true
+                },
                 {
                     title: '单价（元/度）',
                     field: 'price',
@@ -130,7 +160,8 @@
                     title: '总计（元）',
                     field: 'totalPrice',
                     align: 'center',
-                    totalRow: '{{ d.TOTAL_NUMS }} 元'
+                    totalRow: '{{ d.TOTAL_NUMS }} 元',
+                    sort: true
                 }
             ]
         ]
@@ -150,7 +181,7 @@
                 icon: 'layui-icon-refresh',
             }, 'filter', 'print', 'exports']
         });
-        
+
 
         table.on('toolbar(electricity-record-table)', function (obj) {
             if (obj.event === 'add') {
@@ -167,7 +198,7 @@
             })
             return false;
         });
-        
+
         window.add = function () {
             layer.open({
                 type: 2,

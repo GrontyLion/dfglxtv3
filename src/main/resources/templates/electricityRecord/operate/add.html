@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sa="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>新增页面</title>
@@ -9,40 +9,7 @@
 <form class="layui-form" action="">
     <div class="mainBox">
         <div class="main-container">
-            <div class="layui-form-item">
-                <label class="layui-form-label">用户名</label>
-                <div class="layui-input-block">
-                    <input type="text" name="username" lay-verify="required|username" autocomplete="off"
-                           placeholder="请输入用户名，如学号"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">姓名</label>
-                <div class="layui-input-block">
-                    <input type="text" name="name" lay-verify="required|name" autocomplete="off" placeholder="请输入真实姓名"
-                           class="layui-input">
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">邮箱</label>
-                <div class="layui-input-block">
-                    <input placeholder="邮箱 : 123@163.com " name="email" lay-verify="required|email" autocomplete="off"
-                           hover class="layui-input"/>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label">角色</label>
-                <div class="layui-input-block">
-                    <select name="roleId" class="layui-input-block" lay-verify="required" lay-search>
-                        <option value="">请选择角色名（不可空）</option>
-                        <div th:each="role: ${roleList}">
-                            <option th:value="${role.id}" th:text="${role.name}"></option>
-                        </div>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
+            <div sa:hasrole="ADMIN" class="layui-form-item">
                 <label class="layui-form-label">宿舍号</label>
                 <div class="layui-input-block">
                     <select name="dormId" class="layui-input-block" lay-verify="required" lay-search>
@@ -53,11 +20,19 @@
                     </select>
                 </div>
             </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">模拟耗电（度）</label>
+                <div class="layui-input-block">
+                    <input type="number" name="powerConsumption" lay-verify="required|number" autocomplete="off"
+                           placeholder="单位为度"
+                           class="layui-input">
+                </div>
+            </div>
         </div>
     </div>
     <div class="bottom">
         <div class="button-container">
-            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm" lay-submit=""
+            <button type="submit" class="pear-btn pear-btn-primary pear-btn-sm use" lay-submit=""
                     lay-filter="user-save">
                 <i class="layui-icon layui-icon-ok"></i>
                 提交
@@ -72,31 +47,23 @@
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
 <script>
-    layui.use(['form', 'jquery'], function () {
+    layui.use(['form', 'jquery', 'button'], function () {
         let form = layui.form;
         let $ = layui.jquery;
-        form.verify({
-            username: function (value, item) { //value：表单的值、item：表单的DOM对象
-                if (!new RegExp("^[0-9a-zA-Z]{8,16}$").test(value)) {
-                    return '用户名只能包含数字和字母，长度为8-16位';
-                }
-            },
-            name: function (value) {
-                // 姓名只能包含汉字、字母、数字、下划线，长度为2-10位
-                if (!new RegExp("^[\u4e00-\u9fa5_a-zA-Z0-9]{2,10}$").test(value)) {
-                    return '姓名只能包含汉字、字母、数字、下划线，长度为2-10位';
-                }
-            }
-        });
+        let button = layui.button;
 
         form.on('submit(user-save)', function (data) {
+            const dom = button.load({
+                elem: '.use'
+            });
             $.ajax({
-                url: '/api/user/add',
+                url: '/api/electricityRecord/use',
                 data: JSON.stringify(data.field),
                 dataType: 'json',
                 contentType: 'application/json',
                 type: 'post',
                 success: function (result) {
+                    dom.stop();
                     if (result.code === 200) {
                         layer.msg(result.data, {
                             icon: 1,
@@ -104,7 +71,7 @@
                         }, function () {
                             parent.layer.close(parent.layer.getFrameIndex(window
                                 .name)); //关闭当前页
-                            parent.layui.table.reload("user-table");
+                            parent.layui.table.reload("electricity-record-table");
                         });
                     } else {
                         layer.msg(result.msg, {

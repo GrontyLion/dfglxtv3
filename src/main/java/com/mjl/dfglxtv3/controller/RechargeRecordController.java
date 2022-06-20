@@ -42,8 +42,11 @@ public class RechargeRecordController {
     @RequestMapping("/list")
     @ResponseBody
     public Map<String, Object> list(String userId ,String dormId, String buildingId, String startDate, String endDate , String page, String limit) {
-        log.info("page:{}", page);
-        log.info("limit:{}", limit);
+        String loginId = (String)StpUtil.getLoginId();
+        if (StpUtil.hasRole("USER")) {
+            dormId = userService.getById(loginId).getDormId().toString();
+            buildingId = null;
+        }
         Map<String, Object> map = new HashMap<>();
         Page<RechargeRecord> rechargeRecordPage = new Page<>();
         rechargeRecordPage.setCurrent(Integer.parseInt(page));
@@ -74,10 +77,6 @@ public class RechargeRecordController {
     @Transactional
     public Result<String> recharge(@RequestBody RechargeRecord rechargeRecord) {
         String userId = (String) StpUtil.getLoginId();
-        log.info("userId:{}", userId);
-        log.info("dormId:{}", rechargeRecord.getDormId());
-        log.info("amount:{}", rechargeRecord.getAmount());
-
         if (rechargeRecord.getDormId() == null) {
            rechargeRecord.setDormId(userService.getById(userId).getDormId());
         }

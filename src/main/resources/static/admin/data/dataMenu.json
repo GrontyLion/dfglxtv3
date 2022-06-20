@@ -10,7 +10,7 @@
 			"icon": "layui-icon layui-icon-console",
 			"type": 1,
 			"openType": "_iframe",
-			"href": "console/console1"
+			"href": "http://www.baidu.com"
 		}, {
 			"id": 13,
 			"title": "数据分析",

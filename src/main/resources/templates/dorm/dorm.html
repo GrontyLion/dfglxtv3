@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sa="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
     <meta charset="utf-8">
     <title>用户管理</title>
@@ -7,7 +7,7 @@
 </head>
 <body class="pear-container">
 <div class="layui-card">
-    <div class="layui-card-body">
+    <div sa:hasrole="ADMIN" class="layui-card-body">
         <form class="layui-form" action="">
             <div class="layui-form-item">
                 <div class="layui-form-item layui-inline">
@@ -58,20 +58,20 @@
     </div>
 </div>
 
-<script type="text/html" id="user-toolbar">
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
+<script  type="text/html" id="user-toolbar">
+    <button sa:hasrole="ADMIN" class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
     </button>
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="addDormType">
+    <button sa:hasrole="ADMIN" class="pear-btn pear-btn-primary pear-btn-md" lay-event="addDormType">
         <i class="layui-icon layui-icon-add-1"></i>
         新增宿舍类型
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
+    <button sa:hasrole="ADMIN"  class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="deleteDormType">
+    <button sa:hasrole="ADMIN"  class="pear-btn pear-btn-danger pear-btn-md" lay-event="deleteDormType">
         <i class="layui-icon layui-icon-delete"></i>
         删除宿舍类型
     </button>
@@ -80,9 +80,9 @@
 <script type="text/html" id="user-bar">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="view"><i class="layui-icon layui-icon-user"></i>
     </button>
-    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
+    <button sa:hasrole="ADMIN" class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
+    <button sa:hasrole="ADMIN" class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
 

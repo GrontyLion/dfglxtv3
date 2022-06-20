@@ -152,6 +152,11 @@ public class UserController {
     @RequestMapping("/list")
     @ResponseBody
     public Map<String, Object> list(String username, String name, String dormId ,String roleId, String email, String buildingId, String page, String limit) {
+        String loginId = (String) StpUtil.getLoginId();
+        if (StpUtil.hasRole("USER")) {
+            username = userService.getById(loginId).getUsername();
+            buildingId = null;
+        }
         Map<String, Object> map = new HashMap<>();
         Page<User> page1 = new Page<>();
         page1.setCurrent(Integer.parseInt(page));

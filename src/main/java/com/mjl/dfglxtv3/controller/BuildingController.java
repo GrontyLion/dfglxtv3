@@ -1,11 +1,14 @@
 package com.mjl.dfglxtv3.controller;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.mjl.dfglxtv3.common.Result;
 import com.mjl.dfglxtv3.domain.Building;
+import com.mjl.dfglxtv3.domain.Dorm;
 import com.mjl.dfglxtv3.domain.vo.BuildingVo;
 import com.mjl.dfglxtv3.service.BuildingService;
+import com.mjl.dfglxtv3.service.DormService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,9 +32,13 @@ public class BuildingController {
     @Resource
     private BuildingService buildingService;
 
+    @Resource
+    private DormService dormService;
+
     @RequestMapping("/list")
     @ResponseBody
     public Map<String, Object> list(String name, Long electrovalencyTypeId, String page, String limit) {
+        StpUtil.checkLogin();
         Map<String, Object> map = new HashMap<>();
         Page<Building> page1 = new Page<>();
         page1.setCurrent(Integer.parseInt(page));
@@ -54,7 +61,7 @@ public class BuildingController {
     @PostMapping("/add")
     @ResponseBody
     public Result<String> add(@RequestBody Building building) {
-        log.info("add building: " + building);
+        StpUtil.checkRole("ADMIN");
         QueryWrapper<Building> buildingQueryWrapper = new QueryWrapper<>();
         if (building.getName() != null && !"".equals(building.getName())) {
             buildingQueryWrapper.eq("name", building.getName());
@@ -77,7 +84,7 @@ public class BuildingController {
     @PostMapping("/update")
     @ResponseBody
     public Result<String> update(@RequestBody Building building) {
-        log.info("update building: " + building);
+        StpUtil.checkRole("ADMIN");
         QueryWrapper<Building> buildingQueryWrapper = new QueryWrapper<>();
         if (building.getName() != null && !"".equals(building.getName())) {
             buildingQueryWrapper.eq("name", building.getName());
@@ -101,7 +108,14 @@ public class BuildingController {
     @PostMapping("/delete")
     @ResponseBody
     public Result<String> delete(String id) {
-        log.info("delete building: " + id);
+        StpUtil.checkRole("ADMIN");
+        // 获取该宿舍楼下的所有宿舍
+        QueryWrapper<Dorm> dormQueryWrapper = new QueryWrapper<>();
+        dormQueryWrapper.eq("building_id", id);
+        List<Dorm> dormList = dormService.list(dormQueryWrapper);
+        if (dormList.size() > 0) {
+            return Result.failed("该宿舍楼下存在宿舍，不能删除");
+        }
         boolean remove = buildingService.removeById(id);
         if (remove) {
             return Result.success("删除成功");
@@ -113,7 +127,16 @@ public class BuildingController {
     @PostMapping("/batchRemove")
     @ResponseBody
     public Result<String> batchRemove(@RequestBody List<Long> ids) {
-        log.info("batchRemove building: " + ids);
+        StpUtil.checkRole("ADMIN");
+        for (Long id : ids) {
+            // 获取该宿舍楼下的所有宿舍
+            QueryWrapper<Dorm> dormQueryWrapper = new QueryWrapper<>();
+            dormQueryWrapper.eq("building_id", id);
+            List<Dorm> dormList = dormService.list(dormQueryWrapper);
+            if (dormList.size() > 0) {
+                return Result.failed("宿舍楼：" + buildingService.getById(id).getName() + ", 该宿舍楼下存在宿舍，不能删除");
+            }
+        }
         boolean remove = buildingService.removeByIds(ids);
         if (remove) {
             return Result.success("删除成功");

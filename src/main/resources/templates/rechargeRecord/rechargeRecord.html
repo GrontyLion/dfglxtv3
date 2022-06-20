@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="zh">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sa="http://www.w3.org/1999/xhtml" lang="zh">
 <head>
     <meta charset="utf-8">
     <title>用户管理</title>
@@ -13,15 +13,17 @@
             <div class="layui-form-item layui-inline">
                 <label class="layui-form-label">用户</label>
                 <div class="layui-input-inline">
-                    <select name="userId" class="layui-input-inline" lay-search>
+                    <select sa:hasrole="ADMIN" name="userId" class="layui-input-inline" lay-search>
                         <option value="">请选择用户（可空）</option>
                         <div th:each="user: ${userList}">
                             <option th:value="${user.id}" th:text="${user.username}"></option>
                         </div>
                     </select>
+                    <input sa:hasrole="USER" type="text" name="userId" class="layui-input layui-input-inline"
+                    placeholder="请输入学生学号">
                 </div>
             </div>
-            <div class="layui-form-item layui-inline">
+            <div sa:hasrole="ADMIN" class="layui-form-item layui-inline">
                 <label class="layui-form-label">宿舍号</label>
                 <div class="layui-input-inline">
                     <select name="dormId" class="layui-input-inline" lay-search>
@@ -32,7 +34,7 @@
                     </select>
                 </div>
             </div>
-            <div class="layui-form-item layui-inline">
+            <div sa:hasrole="ADMIN" class="layui-form-item layui-inline">
                 <label class="layui-form-label">宿舍楼</label>
                 <div class="layui-input-inline">
                     <select name="buildingId" class="layui-input-inline" lay-search>
@@ -87,6 +89,25 @@
 <script th:inline="javascript">
 
 
+    // 获取当前东八区时间，包括日期和时间，格式为：yyyy-MM-dd HH:mm:ss
+    function getNowFormatDate() {
+        var date = new Date();
+        var seperator1 = "-";
+        var seperator2 = ":";
+        var month = date.getMonth() + 1;
+        var strDate = date.getDate();
+        if (month >= 1 && month <= 9) {
+            month = "0" + month;
+        }
+        if (strDate >= 0 && strDate <= 9) {
+            strDate = "0" + strDate;
+        }
+        var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+            + " " + date.getHours() + seperator2 + date.getMinutes()
+            + seperator2 + date.getSeconds();
+        return currentdate;
+    }
+
     layui.use(['table', 'form', 'jquery', 'common', 'laydate'], function () {
         let table = layui.table;
         let form = layui.form;
@@ -97,11 +118,23 @@
 
         const startDate = laydate.render({
             elem: '#startDate',
-            max: new Date().toLocaleDateString()
+            type: 'datetime',
+            max: new Date().toLocaleDateString(),
+            done: function (value, date) {
+                endDate.config.min = {
+                    year: date.year,
+                    month: date.month - 1,
+                    date: date.date,
+                    hours: date.hours,
+                    minutes: date.minutes,
+                    seconds: date.seconds
+                };
+            }
         });
         const endDate = laydate.render({
             elem: '#endDate' //指定元素,
-            , max: new Date().toLocaleDateString()
+            , type: 'datetime',
+            max: getNowFormatDate()
         });
 
         let MODULE_PATH = "operate/";
@@ -158,7 +191,6 @@
                 icon: 'layui-icon-refresh',
             }, 'filter', 'print', 'exports']
         });
-
 
         table.on('toolbar(recharge-record-table)', function (obj) {
             if (obj.event === 'add') {
