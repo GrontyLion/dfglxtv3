@@ -25,11 +25,20 @@ public class EmailUtils {
         String code = StringUtils.randomAlphanumeric(6);
         emailService.sendSimpleMail(to, "闽南师范大学宿舍电费管理系统", "验证码：" + code);
         request.getSession().setAttribute("emailCode", code);
+        request.getSession().setAttribute("emailTime", System.currentTimeMillis());
+    }
+
+    public static void sendEmail(String to, String title, String content) throws MailException {
+        emailService.sendSimpleMail(to, title, content);
     }
 
     public static boolean verifyCode(String code, HttpServletRequest request) {
         String emailCode = (String) request.getSession().getAttribute("emailCode");
+        Long emailTime = (Long) request.getSession().getAttribute("emailTime");
         if (emailCode == null) {
+            return false;
+        }
+        if (System.currentTimeMillis() - emailTime > 1000 * 60 * 5) {
             return false;
         }
         return emailCode.equals(code);
@@ -37,5 +46,6 @@ public class EmailUtils {
 
     public static void clearCode(HttpServletRequest request) {
         request.getSession().removeAttribute("emailCode");
+        request.getSession().removeAttribute("emailTime");
     }
 }

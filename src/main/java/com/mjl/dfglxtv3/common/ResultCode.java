@@ -22,7 +22,11 @@ public enum ResultCode {
     ROLE_EXIST(1013, "角色已存在"),
     NONE(99999, "无"),
     EMAIL_SEND_FAILED(1014, "邮件发送失败"),
-    EMAIL_VERIFY_CODE_ERROR(1015, "邮件验证码错误");
+    EMAIL_VERIFY_CODE_ERROR(1015, "邮件验证码错误"),
+    USERNAME_OR_EMAIL_EXIST(1016, "用户名或邮箱已存在"),
+    PASSWORD_NULL(1017, "密码为空"),
+    PASSWORD_RESET_ERROR(1018, "密码重置失败"),
+    DORM_EXIST(1019, "宿舍已存在");
 
 
     private int code;

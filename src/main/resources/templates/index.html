@@ -35,14 +35,13 @@
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="menuSearch layui-icon layui-icon-search"></a></li>
 					<li class="layui-nav-item layui-hide-xs"><a href="#" class="fullScreen layui-icon layui-icon-screen-full"></a></li>
-					<li class="layui-nav-item layui-hide-xs"><a href="http://www.pearadmin.com" class="layui-icon layui-icon-website"></a></li>
 					<li class="layui-nav-item layui-hide-xs message"></li>
 					<li class="layui-nav-item user">
 						<!-- 头 像 -->
 						<a class="layui-icon layui-icon-username" href="javascript:;"></a>
 						<!-- 功 能 菜 单 -->
 						<dl class="layui-nav-child">
-							<dd><a user-menu-url="system/person.html" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
+							<dd><a user-menu-url="system/person" user-menu-id="5555" user-menu-title="基本资料">基本资料</a></dd>
 							<dd><a href="javascript:void(0);" class="logout">注销登录</a></dd>
 						</dl>
 					</li>
@@ -68,17 +67,6 @@
 			<div class="layui-body">
 				<!-- 内 容 页 面 -->
 				<div id="content"></div>
-			</div>
-			<!-- 页脚 -->
-			<div class="layui-footer layui-text">
-				<span class="left">
-					<span>
-						官网：<a href="http://www.pearadmin.com/team.html" target="_blank">www.pearadmin.com</a>&nbsp;&nbsp;&nbsp;
-						仓库：<a href="https://gitee.com/pear-admin/Pear-Admin-Layui" target="_blank">gitee.com/pear-admin</a>
-					</span>
-				</span>
-				<span class="center"></span>
-				<span class="right"></span>
 			</div>
 			<!-- 遮 盖 层 -->
 			<div class="pear-cover"></div>
@@ -127,9 +115,9 @@
 					});
 					return false;
 				})
-				
-				// 自定义消息点击回调
-				admin.message(function(id, title, context, form) {});
+				//
+				// // 自定义消息点击回调
+				// admin.message(function(id, title, context, form) {});
 			})
 		</script>		
 	</body>

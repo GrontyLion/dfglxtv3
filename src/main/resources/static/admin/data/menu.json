@@ -25,6 +25,22 @@
     "openType": "_iframe"
   },
   {
+    "id": "user",
+    "title": "用户管理",
+    "icon": "layui-icon layui-icon-face-smile",
+    "type": 1,
+    "openType": "_iframe",
+    "href": "user/user"
+  },
+  {
+  "id": "building",
+  "title": "宿舍楼管理",
+  "icon": "layui-icon layui-icon-face-cry",
+  "type": 1,
+  "openType": "_iframe",
+  "href": "building/building"
+},
+  {
     "id": "system",
     "title": "系统管理",
     "icon": "layui-icon layui-icon-set-fill",

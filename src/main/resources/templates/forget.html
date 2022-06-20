@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>注册界面</title>
+    <title>找回密码界面</title>
     <!-- 样 式 文 件 -->
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
     <link rel="stylesheet" th:href="@{/admin/css/other/register.css}"/>
@@ -23,13 +23,6 @@
                class="layui-input"/>
     </div>
     <div class="layui-form-item">
-        <input placeholder="姓名 : 张三 " name="name" lay-verify="required" hover class="layui-input"/>
-    </div>
-    <div class="layui-form-item">
-        <input placeholder="密 码 : admin " type="password" name="password" lay-verify="required|pass" hover
-               class="layui-input"/>
-    </div>
-    <div class="layui-form-item">
         <input placeholder="邮箱 : 123@163.com " name="email" lay-verify="required|email" hover class="layui-input"/>
     </div>
     <div class="layui-form-item">
@@ -38,21 +31,13 @@
         <button class="pear-btn pear-btn-primary button-inline send-email" lay-filter="send">发送</button>
     </div>
     <div class="layui-form-item">
-        <select name="dormId" lay-verify="required" lay-search>
-            <option value="">请选择你的宿舍</option>
-            <div th:each="dorm: ${dormList}">
-                <option th:value="${dorm.id}" th:text="${dorm.name}"></option>
-            </div>
-        </select>
-    </div>
-    <div class="layui-form-item">
-        <button type="button" class="pear-btn pear-btn-success register" lay-submit lay-filter="register">
-            注 册
+        <button type="button" class="pear-btn pear-btn-success forget" lay-submit lay-filter="forget">
+            找 回
         </button>
     </div>
     <div class="layui-form-item ">
         <div class="layui-row flex-space-around">
-            <a th:href="@{/forget}" class="forget">忘记密码？</a>
+            <a th:href="@{/register}" class="register">注册账号</a>
             <a th:href="@{/login}" class="relogin">返回登录</a>
         </div>
     </div>
@@ -129,42 +114,28 @@
                     return '用户名只能包含数字和字母，长度为8-16位';
                 }
             }
-            , pass: [
-                /^[\S]{6,20}$/
-                , '密码必须6到20位，且不能出现空格'
-            ]
         });
 
         // 登 录 提 交
-        form.on('submit(register)', function (data) {
+        form.on('submit(forget)', function (data) {
             /// 验证
             if (data.field.code.length !== 6) {
                 popup.failure('验证码长度不正确');
                 return false;
             }
-            if (!/^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/.test(data.field.email)) {
-                popup.failure('邮箱格式不正确');
-                return false;
-            }
-            if (data.field.dormId === '') {
-                popup.failure('请选择你的宿舍');
-                return false;
-            }
             /// 动画
             const dom = button.load({
-                elem: '.register'
+                elem: '.forget'
             })
             /// 注册
             $.ajax({
-                url: '/api/user/register',
+                url: '/api/user/forget',
                 type: 'POST',
                 data: data.field,
                 success: function (res) {
                     dom.stop()
                     if (res.code === 200) {
-                        popup.success('注册成功，将自动登录', function () {
-                            window.location.href = '/index';
-                        });
+                        popup.success(res.data);
                     } else {
                         popup.failure(res.msg);
                     }

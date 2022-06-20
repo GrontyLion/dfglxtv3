@@ -25,8 +25,25 @@ public class SaTokenConfigure implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns("/login",
                         "/api/user/login",
+                        "/api/user/register",
+                        "/api/user/add",
+                        "/api/user/forget",
+                        "/api/user/reset",
                         "/api/user/logout",
-                        "/api/role/list"
+                        "/api/user/list",
+                        "/api/role/list",
+                        "/api/dorm/delete",
+                        "/api/dorm/batchRemove",
+                        "/api/dorm/update",
+                        "/api/user/update",
+                        "/api/user/delete",
+                        "/api/user/batchRemove",
+                        "/api/building/add",
+                        "/api/building/update",
+                        "/api/building/delete",
+                        "/api/building/batchRemove",
+                        "/api/dormType/add",
+                        "/api/dormType/delete"
                 );
     }
 }

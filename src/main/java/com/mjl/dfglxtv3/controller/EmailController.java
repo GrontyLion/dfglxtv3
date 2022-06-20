@@ -36,7 +36,7 @@ public class EmailController {
             e.printStackTrace();
             return Result.failed(ResultCode.EMAIL_SEND_FAILED);
         }
-        return Result.success("邮件发送成功");
+        return Result.success("邮件发送成功, 请查收, 验证码5分钟内有效");
     }
 
 }

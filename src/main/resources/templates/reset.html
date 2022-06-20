@@ -3,10 +3,10 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>登录界面</title>
+    <title>重置密码界面</title>
     <!-- 样 式 文 件 -->
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
-    <link rel="stylesheet" th:href="@{/admin/css/other/login.css}"/>
+    <link rel="stylesheet" th:href="@{/admin/css/other/register.css}"/>
 </head>
 <!-- 代 码 结 构 -->
 <body background="/admin/images/background.svg" style="background-size: cover;">
@@ -18,29 +18,24 @@
             闽南师范大学宿舍电费管理系统
         </div>
     </div>
+    <input type="hidden" name="token" th:value="${#request.getParameter('token')}"/>
     <div class="layui-form-item">
-        <input placeholder="用户名或邮箱: " name="username" lay-verify="required" hover class="layui-input"/>
+        <input placeholder="新 密 码 :  " type="password" name="password" lay-verify="required|pass" hover
+               class="layui-input"/>
     </div>
     <div class="layui-form-item">
-        <input placeholder="密 码 :" name="password" type="password" lay-verify="required" hover class="layui-input"/>
+        <input placeholder="确认密码 :  " type="password" lay-verify="required|rePass" hover
+               class="layui-input"/>
     </div>
     <div class="layui-form-item">
-        <input placeholder="验证码 : " name="code" hover lay-verify="required"
-               class="code layui-input layui-input-inline"/>
-        <img th:src="@{/api/captcha}" class="codeImage" onclick="this.src='/api/captcha?d='+new Date()*1"/>
-    </div>
-    <div class="layui-form-item">
-        <input type="checkbox" name="remember" title="记住密码" lay-skin="primary" checked>
-    </div>
-    <div class="layui-form-item">
-        <button type="button" class="pear-btn pear-btn-success login" lay-submit lay-filter="login">
-            登 入
+        <button type="button" class="pear-btn pear-btn-success reset" lay-submit lay-filter="reset">
+            确 认 修 改
         </button>
     </div>
     <div class="layui-form-item ">
         <div class="layui-row flex-space-around">
-            <a th:href="@{/forget}" class="forget">忘记密码？</a>
             <a th:href="@{/register}" class="register">注册账号</a>
+            <a th:href="@{/login}" class="relogin">返回登录</a>
         </div>
     </div>
 </form>
@@ -54,36 +49,33 @@
         const popup = layui.popup;
         const $ = layui.jquery;
 
-        // 页面加载完成后，自动获取存储的用户名和密码
-        const username = localStorage.getItem('username');
-        const password = localStorage.getItem('password');
-        if (username && password) {
-            $('input[name="username"]').val(username);
-            $('input[name="password"]').val(password);
-            $('input[name="remember"]').prop('checked', true);
-        }
+        form.verify({
+            rePass: function (value, item) { //value：表单的值、item：表单的DOM对象
+                if (value !== $('[name="password"]').val()) {
+                    return '两次密码不一致';
+                }
+            },
+            pass: [
+                /^[\S]{6,20}$/
+                , '密码必须6到20位，且不能出现空格'
+            ]
+        });
 
         // 登 录 提 交
-        form.on('submit(login)', function (data) {
-            /// 验证
-            if (data.field.code.length !== 4) {
-                popup.failure('验证码长度不正确');
-                return false;
-            }
-
+        form.on('submit(reset)', function (data) {
+            /// 动画
             const dom = button.load({
-                elem: '.login'
+                elem: '.reset'
             })
-            /// 登录
+            /// 注册
             $.ajax({
-                url: '/api/user/login',
+                url: '/api/user/reset',
                 type: 'POST',
                 data: data.field,
                 success: function (res) {
-                    dom.stop();
+                    dom.stop()
                     if (res.code === 200) {
-                        popup.success(res.data, function () {
-                            // 处理用户记住密码
+                        popup.success('修改成功，将自动跳回登录界面', function () {
                             window.location.href = '/index';
                         });
                     } else {
@@ -91,8 +83,6 @@
                     }
                 }
             });
-
-
             return false;
         });
     })

@@ -2,98 +2,82 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="zh">
 <head>
     <meta charset="utf-8">
-    <title>用户管理</title>
+    <title>宿舍楼管理</title>
     <link rel="stylesheet" th:href="@{/component/pear/css/pear.css}"/>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="pear-container">
 <div class="layui-card">
     <div class="layui-card-body">
-        <form class="layui-form" action="">
-            <div class="layui-form-item">
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">宿舍名</label>
-                    <div class="layui-input-inline">
-                        <input type="text" name="name" placeholder="" class="layui-input">
-                    </div>
-                </div>
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">宿舍类型</label>
-                    <div class="layui-input-inline">
-                        <select name="dormTypeId" class="layui-input-inline" lay-search>
-                            <option value="">请选择宿舍类型（可空）</option>
-                            <div th:each="dormType: ${dormTypeList}">
-                                <option th:value="${dormType.id}" th:text="${dormType.name}"></option>
-                            </div>
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-form-item layui-inline">
-                    <label class="layui-form-label">宿舍楼</label>
-                    <div class="layui-input-inline">
-                        <select name="buildingId" class="layui-input-inline" lay-search>
-                            <option value="">请选择宿舍楼（可空）</option>
-                            <div th:each="building: ${buildingList}">
-                                <option th:value="${building.id}" th:text="${building.name}"></option>
-                            </div>
-                        </select>
-                    </div>
-                </div>
-                <div class="layui-form-item layui-inline">
-                    <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="user-query">
-                        <i class="layui-icon layui-icon-search"></i>
-                        查询
-                    </button>
-                    <button type="reset" class="pear-btn pear-btn-md">
-                        <i class="layui-icon layui-icon-refresh"></i>
-                        重置
-                    </button>
+        <form class="layui-form flex justify-start flex-wrap" action="">
+
+            <div class="layui-form-item layui-inline">
+                <label class="layui-form-label">宿舍楼</label>
+                <div class="layui-input-inline">
+                    <input type="text" name="name" placeholder="" class="layui-input">
                 </div>
             </div>
+            <div class="layui-form-item layui-inline ">
+                <label class="layui-form-label w-24">电费类型</label>
+                <div class="layui-input-inline">
+                    <select name="electrovalencyTypeId" class="layui-input-inline" lay-search>
+                        <option value="">请选择电费类型（可空）</option>
+                        <div th:each="electrovalencyType: ${electrovalencyTypeList}">
+                            <option th:value="${electrovalencyType.id}" th:text="${electrovalencyType.name}"></option>
+                        </div>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item layui-inline ">
+                <button class="pear-btn pear-btn-md pear-btn-primary" lay-submit lay-filter="building-query">
+                    <i class="layui-icon layui-icon-search"></i>
+                    查询
+                </button>
+                <button type="reset" class="pear-btn pear-btn-md">
+                    <i class="layui-icon layui-icon-refresh"></i>
+                    重置
+                </button>
+            </div>
+
         </form>
     </div>
 </div>
 <div class="layui-card">
     <div class="layui-card-body">
-        <table id="dorm-table" lay-filter="dorm-table"></table>
+        <table id="building-table" lay-filter="building-table"></table>
     </div>
 </div>
 
-<script type="text/html" id="user-toolbar">
+<script type="text/html" id="building-toolbar">
     <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="add">
         <i class="layui-icon layui-icon-add-1"></i>
         新增
-    </button>
-    <button class="pear-btn pear-btn-primary pear-btn-md" lay-event="addDormType">
-        <i class="layui-icon layui-icon-add-1"></i>
-        新增宿舍类型
     </button>
     <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="batchRemove">
         <i class="layui-icon layui-icon-delete"></i>
         删除
     </button>
-    <button class="pear-btn pear-btn-danger pear-btn-md" lay-event="deleteDormType">
-        <i class="layui-icon layui-icon-delete"></i>
-        删除宿舍类型
-    </button>
 </script>
 
-<script type="text/html" id="user-bar">
-    <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="view"><i class="layui-icon layui-icon-user"></i>
-    </button>
+<script type="text/html" id="building-bar">
     <button class="pear-btn pear-btn-primary pear-btn-sm" lay-event="edit"><i class="layui-icon layui-icon-edit"></i>
     </button>
     <button class="pear-btn pear-btn-danger pear-btn-sm" lay-event="remove"><i class="layui-icon layui-icon-delete"></i>
     </button>
 </script>
 
+
 <script th:src="@{/component/layui/layui.js}"></script>
 <script th:src="@{/component/pear/pear.js}"></script>
-<script>
+<script th:inline="javascript">
+
+
     layui.use(['table', 'form', 'jquery', 'common'], function () {
         let table = layui.table;
         let form = layui.form;
         let $ = layui.jquery;
         let common = layui.common;
+
 
         let MODULE_PATH = "operate/";
 
@@ -102,42 +86,32 @@
                 type: 'checkbox'
             },
                 {
-                    title: '宿舍名',
+                    title: '宿舍楼',
                     field: 'name',
                     align: 'center',
-                    width: 100
                 },
                 {
-                    title: '宿舍类型',
-                    field: 'dormTypeName',
-                    align: 'center'
-                },
-                {
-                    title: '宿舍地址',
-                    field: 'buildingName',
-                    align: 'center',
-                },
-                {
-                    title: '宿舍电费余额',
-                    field: 'deposit',
+                    title: '电费类型',
+                    field: 'electrovalencyTypeName',
                     align: 'center'
                 },
                 {
                     title: '操作',
-                    toolbar: '#user-bar',
+                    toolbar: '#building-bar',
                     align: 'center',
-                    width: 200
+                    width: 130
                 }
             ]
         ]
 
         table.render({
-            elem: '#dorm-table',
-            url: '/api/dorm/list',
+            elem: '#building-table',
+            url: '/api/building/list',
             page: true,
+            type: 'POST',
             cols: cols,
             skin: 'line',
-            toolbar: '#user-toolbar',
+            toolbar: '#building-toolbar',
             defaultToolbar: [{
                 title: '刷新',
                 layEvent: 'refresh',
@@ -145,72 +119,49 @@
             }, 'filter', 'print', 'exports']
         });
 
-        table.on('tool(dorm-table)', function (obj) {
+        // const dormId = [[${#request.getParameter("dormId")}]]
+        // const buildingId = [[${#request.getParameter("buildingId")}]]
+        // if (dormId !== '') {
+        //     $('[name="dormId"]').val(dormId);
+        //     $('[name="buildingId"]').val(buildingId);
+        //     form.render('select');
+        //     table.reload('building-table', {
+        //         where: {
+        //             dormId: dormId
+        //         },
+        //         url: '/api/user/list'
+        //     })
+        // }
+
+        table.on('tool(building-table)', function (obj) {
             if (obj.event === 'remove') {
                 window.remove(obj);
             } else if (obj.event === 'edit') {
                 window.edit(obj);
-            }else if (obj.event === 'view') {
-                window.view(obj);
             }
         });
 
-        table.on('toolbar(dorm-table)', function (obj) {
+        table.on('toolbar(building-table)', function (obj) {
             if (obj.event === 'add') {
                 window.add();
             } else if (obj.event === 'refresh') {
                 window.refresh();
             } else if (obj.event === 'batchRemove') {
                 window.batchRemove(obj);
-            }else if (obj.event === 'addDormType') {
-                window.addDormType(obj);
-            }else if (obj.event === 'deleteDormType') {
-                window.deleteDormType(obj);
             }
         });
 
-        form.on('submit(user-query)', function (data) {
-            table.reload('dorm-table', {
+        form.on('submit(building-query)', function (data) {
+            table.reload('building-table', {
                 where: data.field,
-                url: '/api/dorm/list'
+                url: '/api/building/list'
             })
             return false;
         });
 
-        form.on('switch(user-enable)', function (obj) {
+        form.on('switch(building-enable)', function (obj) {
             layer.tips(this.value + ' ' + this.name + '：' + obj.elem.checked, obj.othis);
         });
-
-        window.addDormType = function (obj) {
-            layer.open({
-                type: 2,
-                title: '新增宿舍类型',
-                shade: 0.1,
-                area: [common.isModile() ? '100%' : '500px', common.isModile() ? '100%' : '400px'],
-                content: MODULE_PATH + 'addDormType',
-                end: function () {
-                    parent.layui.admin.refreshThis();
-                }
-
-            });
-        }
-        window.deleteDormType = function (obj) {
-            layer.open({
-                type: 2,
-                title: '删除宿舍类型',
-                shade: 0.1,
-                area: [common.isModile() ? '100%' : '500px', common.isModile() ? '100%' : '400px'],
-                content: MODULE_PATH + 'deleteDormType',
-                end: function () {
-                    parent.layui.admin.refreshThis();
-                }
-
-            });
-        }
-        window.view = function (obj) {
-            parent.layui.admin.closeTab("user")
-            parent.layui.admin.jump("user","用户管理","/user/user?dormId="+obj.data.id+"&buildingId="+obj.data.buildingId);
-        }
 
         window.add = function () {
             layer.open({
@@ -227,20 +178,20 @@
                 type: 2,
                 title: '修改',
                 shade: 0.1,
-                area: ['500px', '400px'],
-                content: '/dorm/operate/edit?id=' + obj.data.id
+                area: ['500px', '500px'],
+                content: '/building/operate/edit?id=' + obj.data.id
             });
         }
 
         window.remove = function (obj) {
-            layer.confirm('确定要删除该宿舍', {
+            layer.confirm('确定要删除该宿舍楼', {
                 icon: 3,
                 title: '提示'
             }, function (index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "/api/dorm/delete",
+                    url: "/api/building/delete",
                     data: {
                         id: obj.data.id
                     },
@@ -279,14 +230,14 @@
 
             let ids = checkIds.split(",");
 
-            layer.confirm('确定要删除这些用户', {
+            layer.confirm('确定要删除这些宿舍楼', {
                 icon: 3,
                 title: '提示'
             }, function (index) {
                 layer.close(index);
                 let loading = layer.load();
                 $.ajax({
-                    url: "/api/dorm/batchRemove",
+                    url: "/api/building/batchRemove",
                     dataType: 'json',
                     contentType: 'application/json',
                     data: JSON.stringify(ids),
@@ -298,7 +249,7 @@
                                 icon: 1,
                                 time: 1000
                             }, function () {
-                                table.reload('dorm-table');
+                                table.reload('building-table');
                             });
                         } else {
                             layer.msg(result.msg, {
@@ -312,7 +263,7 @@
         }
 
         window.refresh = function (param) {
-            table.reload('dorm-table');
+            table.reload('building-table');
         }
     })
 </script>
